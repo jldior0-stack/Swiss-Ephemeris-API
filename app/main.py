@@ -149,12 +149,14 @@ def create_app() -> FastAPI:
             get_swiss_core()
             return {
                 "status": "ok",
-                "ephe_path": settings.ephe_path,
                 "source": settings.source_url,
             }
         except Exception as e:
             log.error("health_check_failed", error=str(e))
-            raise HTTPException(status_code=503, detail=f"Swiss Ephemeris not available: {e}")
+            raise HTTPException(
+                status_code=503,
+                detail="Swiss Ephemeris is unavailable",
+            ) from e
 
     return app
 

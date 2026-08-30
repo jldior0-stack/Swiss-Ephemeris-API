@@ -100,7 +100,7 @@ uvicorn app.main:app --reload
 
 ```bash
 curl http://localhost:8000/health
-# → {"status": "ok", "ephe_path": "./ephe", "source": "..."}
+# → {"status": "ok", "source": "https://github.com/jldior0-stack/Swiss-Ephemeris-API"}
 
 curl -X POST http://localhost:8000/api/v1/planets \
   -H "Content-Type: application/json" \

@@ -54,8 +54,13 @@ class TestHealth:
         resp = client.get("/health")
         assert resp.status_code in (200, 503)
         data = resp.json()
-        assert "status" in data
-        assert "ephe_path" in data
+        assert "ephe_path" not in data
+        assert "/home/" not in str(data)
+        assert "/Users/" not in str(data)
+        if resp.status_code == 200:
+            assert data["status"] == "ok"
+        else:
+            assert data["detail"] == "Swiss Ephemeris is unavailable"
 
     def test_health_includes_source_url(self, client):
         resp = client.get("/health")

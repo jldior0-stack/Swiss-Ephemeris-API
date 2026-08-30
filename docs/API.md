@@ -179,12 +179,12 @@ Health check verifying Swiss Ephemeris initialization.
 ```json
 {
   "status": "ok",
-  "ephe_path": "./ephe",
-  "source": "https://github.com/devtrongle/Swiss-Ephemeris-API"
+  "source": "https://github.com/jldior0-stack/Swiss-Ephemeris-API"
 }
 ```
 
-**Response (503 Service Unavailable)** — if ephemeris files are missing.
+**Response (503 Service Unavailable)** — if Swiss Ephemeris initialization fails.
+The public response is intentionally generic and does not expose server paths.
 
 ---
 
