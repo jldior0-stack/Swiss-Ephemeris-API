@@ -21,7 +21,7 @@ AGPL_NOTICE = (
     "This project is based on Swiss Ephemeris by Astrodienst AG and is released\n"
     "under the GNU Affero General Public License (AGPL-3.0-or-later).\n"
     "Source code must always be public and match the code running on this server.\n"
-    "Source: https://github.com/devtrongle/swiss-ephemeris-api"
+    f"Source: {settings.source_url}"
 )
 
 
@@ -150,7 +150,7 @@ def create_app() -> FastAPI:
             return {
                 "status": "ok",
                 "ephe_path": settings.ephe_path,
-                "source": "https://github.com/devtrongle/swiss-ephemeris-api",
+                "source": settings.source_url,
             }
         except Exception as e:
             log.error("health_check_failed", error=str(e))

@@ -39,6 +39,7 @@ class TestRoot:
         data = resp.json()
         assert data["license"] == "AGPL-3.0-or-later"
         assert "AGPL" in data["notice"]
+        assert "https://github.com/jldior0-stack/Swiss-Ephemeris-API" in data["notice"]
 
     def test_includes_metadata_fields(self, client):
         resp = client.get("/")
@@ -59,7 +60,7 @@ class TestHealth:
     def test_health_includes_source_url(self, client):
         resp = client.get("/health")
         if resp.status_code == 200:
-            assert "github.com" in resp.json()["source"]
+            assert resp.json()["source"] == "https://github.com/jldior0-stack/Swiss-Ephemeris-API"
 
 
 @pytest.mark.skipif(not EPHE_AVAILABLE, reason="Ephemeris files not found in EPHE_PATH")

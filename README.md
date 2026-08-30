@@ -8,7 +8,11 @@ REST API for Swiss Ephemeris astronomical calculations. Built with Python 3.12+,
 > Swiss Ephemeris is free for non-commercial use. For commercial use,
 > a license must be obtained from Astrodienst AG.
 
-**Source**: https://github.com/devtrongle/swiss-ephemeris-api
+**Deployed source**: https://github.com/jldior0-stack/Swiss-Ephemeris-API
+
+**Upstream project**: https://github.com/devtrongle/swiss-ephemeris-api
+
+**Live API**: https://ephemeris.lumerune.com (`/docs` for Swagger UI)
 
 ---
 
@@ -137,6 +141,34 @@ docker compose up --build
 ```
 
 The Dockerfile automatically downloads the ephemeris files from the GitHub mirror.
+
+---
+
+## Server deployment (Nginx)
+
+The production helper keeps Uvicorn bound to `127.0.0.1:8765`; Nginx is the
+only public entry point. It does not require `cloudflared`.
+
+```bash
+# Requires screen and uv; uv creates .venv on the first run.
+./manage.sh start
+./manage.sh status
+
+# Install and enable the HTTP reverse-proxy template.
+sudo install -m 0644 deploy/nginx/ephemeris.lumerune.com.conf \
+  /etc/nginx/sites-available/ephemeris.lumerune.com
+sudo ln -s /etc/nginx/sites-available/ephemeris.lumerune.com \
+  /etc/nginx/sites-enabled/ephemeris.lumerune.com
+sudo nginx -t
+sudo nginx -s reload
+
+# Run after DNS points ephemeris.lumerune.com to the server.
+sudo certbot --nginx -d ephemeris.lumerune.com --redirect
+```
+
+Runtime state, logs, PID files, `.env`, and TLS private keys are intentionally
+excluded from Git. The checked-in Nginx file is a pre-certificate bootstrap
+template; Certbot adds the HTTPS blocks on the server.
 
 ---
 

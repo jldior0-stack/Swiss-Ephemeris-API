@@ -10,6 +10,10 @@ class Settings(BaseSettings):
     port: int = 8000
     cors_origins: str = "*"
     log_level: str = "INFO"
+    source_url: str = Field(
+        default="https://github.com/jldior0-stack/Swiss-Ephemeris-API",
+        validation_alias="SOURCE_URL",
+    )
 
     @property
     def cors_origins_list(self) -> list[str]:
