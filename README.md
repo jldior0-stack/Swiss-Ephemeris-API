@@ -13,6 +13,9 @@ REST API for Swiss Ephemeris astronomical calculations. Built with Python 3.12+,
 **Upstream project**: https://github.com/devtrongle/swiss-ephemeris-api
 
 **Live API**: https://ephemeris.lumerune.com (`/docs` for Swagger UI)
+**Lumerune**: https://lumerune.com
+
+This API is used as the astrology engine for [Lumerune](https://lumerune.com), including natal charts, houses, aspects, and other chart calculations.
 
 ---
 
@@ -110,6 +113,58 @@ curl -X POST http://localhost:8000/api/v1/planets \
     "latitude": 21.0285,
     "longitude": 105.8542
   }'
+```
+
+### 5. Integrate with Lumerune
+
+`ephemeris.lumerune.com` is exposed for public chart calculations and is used as
+the chart engine by `lumerune.com`.
+
+Example request for a natal chart:
+
+```bash
+curl -X POST https://ephemeris.lumerune.com/api/v1/birth-chart \
+  -H "Content-Type: application/json" \
+  -d '{
+    "datetime": "1990-01-15T12:00:00",
+    "timezone": "Asia/Ho_Chi_Minh",
+    "latitude": 21.0285,
+    "longitude": 105.8542,
+    "house_system": "P",
+    "ayanamsa": "TROPICAL"
+  }'
+```
+
+Example request for aspects (common in astrology products):
+
+```bash
+curl -X POST https://ephemeris.lumerune.com/api/v1/aspects \
+  -H "Content-Type: application/json" \
+  -d '{
+    "datetime": "1990-01-15T12:00:00",
+    "timezone": "Asia/Ho_Chi_Minh",
+    "latitude": 21.0285,
+    "longitude": 105.8542
+  }'
+```
+
+Recommended environment settings for production with the Lumerune frontend:
+
+```bash
+CORS_ORIGINS=https://lumerune.com,https://www.lumerune.com
+```
+
+Lumerune front-end pages typically consume:
+
+- `/api/v1/birth-chart` for natal chart rendering
+- `/api/v1/aspects` for aspect grid and interpretation logic
+- `/api/v1/planets` and `/api/v1/fixed-stars` for advanced analytics
+
+For quick discovery and smoke testing:
+
+```bash
+curl https://ephemeris.lumerune.com/docs
+curl https://ephemeris.lumerune.com/health
 ```
 
 ---
